@@ -10,6 +10,7 @@ You can find its changes [documented below](#083---2023-02-28).
 ### Added
 
 - Type name is now included in panic error messages in `WidgetPod`. ([#2380] by [@matthewgapp])
+- `Slider` widget now scrollable by mouse wheel ([#2104] by [@gordonshieh])
 
 ### Changed
 
