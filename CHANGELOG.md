@@ -22,6 +22,7 @@ You can find its changes [documented below](#083---2023-02-28).
 
 - `syn` feature `extra-traits` is now always enabled. ([#2375] by [@AtomicGamer9523])
 - Title bar color was opposite of the system theme on Windows. ([#2378] by [@Insprill])
+- Windows: generate `commands::OPEN_FILES` when using multiselect in file open dialog. ([#2332] by [@ppykalo])
 
 ### Visual
 
@@ -791,6 +792,7 @@ Last release without a changelog :(
 [@AtomicGamer9523]: https://github.com/AtomicGamer9523
 [@Insprill]: https://github.com/Insprill
 [@matthewgapp]: https://github.com/matthewgapp
+[@ppykalo]: https://github.com/ppykalo
 
 [#599]: https://github.com/linebender/druid/pull/599
 [#611]: https://github.com/linebender/druid/pull/611
@@ -1221,6 +1223,7 @@ Last release without a changelog :(
 [#2329]: https://github.com/linebender/druid/pull/2329
 [#2330]: https://github.com/linebender/druid/pull/2330
 [#2331]: https://github.com/linebender/druid/pull/2331
+[#2332]: https://github.com/linebender/druid/pull/2332
 [#2335]: https://github.com/linebender/druid/pull/2335
 [#2337]: https://github.com/linebender/druid/pull/2337
 [#2338]: https://github.com/linebender/druid/pull/2338
