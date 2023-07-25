@@ -397,10 +397,18 @@ impl WindowBuilder {
         );
     }
 
+    pub fn show_title(&mut self, _show_title: bool) {
+        // Ignored
+    }
+
     pub fn set_transparent(&mut self, _transparent: bool) {
         tracing::warn!(
             "set_transparent unimplemented for wayland, it allows transparency by default"
         );
+    }
+
+    pub fn set_transparent_titlebar(&mut self, _transparent_titlebar: bool) {
+        // Ignored
     }
 
     pub fn set_position(&mut self, position: Point) {
