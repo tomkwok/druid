@@ -560,7 +560,7 @@ pub mod layershell {
 
             let handle = WindowHandle::new(
                 surface.clone(),
-                surfaces::surface::Dead::default(),
+                surfaces::surface::Dead,
                 surface.clone(),
                 surface.clone(),
                 self.appdata.clone(),
@@ -630,7 +630,7 @@ pub mod popup {
 
         let handle = WindowHandle::new(
             surface.clone(),
-            surfaces::surface::Dead::default(),
+            surfaces::surface::Dead,
             surface.clone(),
             surface.clone(),
             wappdata,
