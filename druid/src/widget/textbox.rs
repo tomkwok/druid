@@ -27,8 +27,8 @@ use crate::text::{
 use crate::widget::prelude::*;
 use crate::widget::{Padding, Scroll, WidgetWrapper};
 use crate::{
-    theme, ArcStr, Color, Command, FontDescriptor, HotKey, KeyEvent, KeyOrValue, Point, Rect,
-    SysMods, TextAlignment, TimerToken, Vec2,
+    theme, ArcStr, Color, Command, FontDescriptor, HotKey, KeyEvent, KeyOrValue, MouseButton,
+    Point, Rect, SysMods, TextAlignment, TimerToken, Vec2,
 };
 
 use super::LabelText;
@@ -566,7 +566,7 @@ impl<T: TextStorage + EditableText> Widget<T> for TextBox<T> {
             }
             Event::MouseDown(mouse) if self.text().can_write() => {
                 if !ctx.is_disabled() {
-                    if !mouse.focus {
+                    if !mouse.focus && mouse.button == MouseButton::Left {
                         ctx.request_focus();
                         self.was_focused_from_click = true;
                         self.reset_cursor_blink(ctx.request_timer(CURSOR_BLINK_DURATION));
