@@ -50,27 +50,25 @@ impl WaylandSource {
     /// Get a dispatcher that we can insert into our event loop.
     pub fn into_dispatcher(
         self,
-    ) -> Dispatcher<
-        Self,
-        impl FnMut(
-            window::WindowHandle,
-            &mut Rc<RefCell<EventQueue>>,
-            &mut std::sync::Arc<application::Data>,
-        ) -> io::Result<u32>,
-    > {
-        Dispatcher::new(self, |_winhandle, queue, appdata| {
-            queue
-                .borrow_mut()
-                .dispatch_pending(appdata, |event, object, _| {
-                    tracing::error!(
-                        "[druid-shell] Encountered an orphan event: {}@{} : {}",
-                        event.interface,
-                        object.as_ref().id(),
-                        event.name
-                    );
-                    tracing::error!("all events should be handled: please raise an issue");
-                })
-        })
+    ) -> Dispatcher<'static, WaylandSource, std::sync::Arc<application::Data>> {
+        Dispatcher::new(
+            self,
+            |_winhandle,
+             queue: &mut Rc<RefCell<EventQueue>>,
+             appdata: &mut std::sync::Arc<application::Data>| {
+                queue
+                    .borrow_mut()
+                    .dispatch_pending(appdata, |event, object, _| {
+                        tracing::error!(
+                            "[druid-shell] Encountered an orphan event: {}@{} : {}",
+                            event.interface,
+                            object.as_ref().id(),
+                            event.name
+                        );
+                        tracing::error!("all events should be handled: please raise an issue");
+                    })
+            },
+        )
     }
 }
 
@@ -84,7 +82,7 @@ impl EventSource for WaylandSource {
         ready: calloop::Readiness,
         token: calloop::Token,
         mut callback: F,
-    ) -> std::io::Result<()>
+    ) -> std::io::Result<calloop::PostAction>
     where
         F: FnMut(window::WindowHandle, &mut Rc<RefCell<EventQueue>>) -> Self::Ret,
     {
@@ -96,7 +94,7 @@ impl EventSource for WaylandSource {
             Some(winhandle) => winhandle,
             None => {
                 tracing::error!("unable to acquire current window");
-                return Ok(());
+                return Ok(calloop::PostAction::Reregister);
             }
         };
 
@@ -148,17 +146,21 @@ impl EventSource for WaylandSource {
         }
 
         tracing::trace!("event queue completed");
-        Ok(())
+        Ok(calloop::PostAction::Continue)
     }
 
-    fn register(&mut self, poll: &mut calloop::Poll, token: calloop::Token) -> std::io::Result<()> {
+    fn register(
+        &mut self,
+        poll: &mut calloop::Poll,
+        token: &mut calloop::TokenFactory,
+    ) -> std::io::Result<()> {
         self.fd.register(poll, token)
     }
 
     fn reregister(
         &mut self,
         poll: &mut calloop::Poll,
-        token: calloop::Token,
+        token: &mut calloop::TokenFactory,
     ) -> std::io::Result<()> {
         self.fd.reregister(poll, token)
     }
