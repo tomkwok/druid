@@ -1512,7 +1512,7 @@ fn make_key_event(key: &EventKey, repeat: bool, state: KeyState) -> KeyEvent {
     let keyval = key.keyval();
     let hardware_keycode = key.hardware_keycode();
 
-    let keycode = hardware_keycode_to_keyval(hardware_keycode).unwrap_or_else(|| keyval.clone());
+    let keycode = hardware_keycode_to_keyval(hardware_keycode).unwrap_or(keyval);
 
     let text = keyval.to_unicode();
     let mods = get_modifiers(key.state());
